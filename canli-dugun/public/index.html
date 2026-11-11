@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canlı Düğün</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header id="topbar">
+  <div class="brand"><span>💍</span><span>Canlı<b>Düğün</b></span></div>
+  <div class="pill" id="statusPill"><i class="dot"></i><span id="statusText">DEMO</span></div>
+  <div class="stats">
+    <span class="stat" title="İzleyici">👁 <b id="stViewers">0</b></span>
+    <span class="stat" title="Beğeni">❤️ <b id="stLikes">0</b></span>
+    <span class="stat" title="Toplam elmas">💎 <b id="stDiamonds">0</b></span>
+    <span class="stat" title="Halkadaki kişi">💃 <b id="stDancers">0</b></span>
+  </div>
+  <div class="actions">
+    <button id="btnSound" class="btn gold">🥁 Davul zurnayı başlat</button>
+    <button id="btnNext" class="btn" title="Sonraki parça" hidden>⏭</button>
+    <button id="btnClean" class="btn" title="Sadece sahneyi göster (H)">🎬 Yayın modu</button>
+    <button id="btnFull" class="btn" title="Tam ekran (F)">⛶</button>
+  </div>
+</header>
+
+<main id="layout">
+  <section id="stageWrap">
+    <div id="stage">
+      <canvas id="cv" width="1080" height="1920"></canvas>
+      <div id="board" class="card">
+        <div class="card-title">💛 Takı Listesi</div>
+        <ol id="boardList"></ol>
+        <div id="takiSum">💛 Takı töreni başlasın!</div>
+      </div>
+      <div id="tempo" class="card">
+        <svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle id="tempoArc" class="arc" cx="50" cy="50" r="42"/></svg>
+        <div class="tempo-txt"><span>🥁</span><b id="tempoName">Ağır</b></div>
+      </div>
+      <div id="legend" class="card">
+        <ul id="legendList"></ul>
+      </div>
+      <div id="announce"></div>
+      <div id="banner"></div>
+      <div id="hint"><span>kız / erkek yazınca kıyafet değişir · oyna yazınca zıplar</span><b>💬 Yorum yaz, <em>halaya katıl!</em></b></div>
+    </div>
+  </section>
+
+  <aside id="side">
+    <div class="panel">
+      <div class="panel-h">📡 TikTok bağlantısı</div>
+      <form id="liveForm" class="row2" autocomplete="off">
+        <input id="liveUser" placeholder="@kullaniciadi" maxlength="40">
+        <button id="liveBtn" class="go">Bağlan</button>
+      </form>
+      <p class="sub" id="liveMsg">Bağlı değil. Yayın açacak hesabın kullanıcı adını yaz.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-h">⚡ Sahne enerjisi <b id="energyPct">0%</b></div>
+      <div class="bar"><i id="energyBar"></i></div>
+      <p class="sub">Beğeni, yorum ve hediyeler tempoyu yükseltir: Ağır → Orta → Hızlı → Coşku</p>
+      <p class="sub" id="trackInfo"></p>
+    </div>
+    <div class="panel grow">
+      <div class="panel-h">💬 Canlı akış</div>
+      <ul id="feed"></ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h">🧪 Demo kontrol <label class="sw"><input type="checkbox" id="autoDemo" checked><span>Otomatik izleyici</span></label></div>
+      <div class="btns">
+        <button data-rule="0">💃 Halaya Katıl</button>
+        <button data-rule="1">🥁 Davulcu Ol</button>
+        <button data-rule="2">🤵 Damat Ol</button>
+        <button data-rule="3">👰 Gelin Ol</button>
+        <button data-rule="4">💸 Para Saç</button>
+        <button data-gift="2">🧴 Takı · 20</button>
+        <button data-gift="6">🌌 Takı · 1K</button>
+        <button data-act="likes">❤️ +50 beğeni</button>
+        <button data-act="join5">👥 +5 misafir</button>
+        <button data-act="clear">🧹 Sıfırla</button>
+      </div>
+      <form id="chatForm" autocomplete="off">
+        <input id="chatName" placeholder="İsim" value="Bilal" maxlength="16">
+        <input id="chatText" placeholder="Yorum yaz… (kız / erkek / oyna)" maxlength="80">
+        <button>Gönder</button>
+      </form>
+    </div>
+    <div class="panel">
+      <div class="panel-h">🎁 Hediye kaydı <span class="hint">ad · id · jeton → eşleşme</span></div>
+      <ul id="giftLog"><li class="empty">Henüz hediye gelmedi. Yayında gelen her hediye burada görünür.</li></ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h">💐 Çift <span class="hint">hediyeyle değişene kadar</span></div>
+      <div class="row2">
+        <input id="nameGelin" placeholder="Gelin adı" maxlength="14" value="Zeynep">
+        <input id="nameDamat" placeholder="Damat adı" maxlength="14" value="Koray">
+      </div>
+    </div>
+  </aside>
+</main>
+
+<script src="js/util.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+<script src="js/render.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/live.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Sıra Gecesi — kapak</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#120905}
+  canvas{display:block;position:absolute;inset:0;width:100%;height:100%}
+  #ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;font-family:'Lilita One',Nunito,sans-serif;color:#fff;pointer-events:none}
+  .shade-top{position:absolute;left:0;right:0;top:0;height:42%;background:linear-gradient(180deg,rgba(18,6,4,.85),rgba(18,6,4,0))}
+  .shade-bot{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(0deg,rgba(18,6,4,.9),rgba(18,6,4,0))}
+  .live{position:relative;margin-top:calc(var(--u)*5.5);display:flex;align-items:center;gap:calc(var(--u)*1.4);background:#e5173f;padding:calc(var(--u)*1) calc(var(--u)*3);border-radius:999px;font-family:Nunito,sans-serif;font-weight:900;font-size:calc(var(--u)*4.2);letter-spacing:.06em;box-shadow:0 0 calc(var(--u)*4) rgba(229,23,63,.7)}
+  .live i{width:calc(var(--u)*2.4);height:calc(var(--u)*2.4);border-radius:50%;background:#fff}
+  .title{position:relative;margin-top:calc(var(--u)*2.5);text-align:center;line-height:.86;font-size:calc(var(--u)*17);
+    background:linear-gradient(180deg,#fff6d6 0%,#ffd76a 45%,#f0a12a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+    -webkit-text-stroke:calc(var(--u)*.55) #5a1408;filter:drop-shadow(0 calc(var(--u)*.8) 0 #3a0a04) drop-shadow(0 0 calc(var(--u)*3) rgba(255,160,60,.6))}
+  .sub{position:relative;margin-top:calc(var(--u)*2.2);font-size:calc(var(--u)*5.4);color:#fff;text-shadow:0 calc(var(--u)*.5) 0 #5a1408,0 0 calc(var(--u)*2) rgba(0,0,0,.6)}
+  .sub b{color:#ffd76a}
+  .bottom{position:absolute;bottom:calc(var(--u)*5);display:flex;gap:calc(var(--u)*1.6);flex-wrap:wrap;justify-content:center;padding:0 calc(var(--u)*3)}
+  .tag{font-family:Nunito,sans-serif;font-weight:900;font-size:calc(var(--u)*3.4);background:rgba(20,8,6,.78);border:calc(var(--u)*.35) solid #f0b232;border-radius:999px;padding:calc(var(--u)*.9) calc(var(--u)*2.4);white-space:nowrap}
+  body.wide .title{font-size:calc(var(--u)*15)} body.wide .bottom{bottom:calc(var(--u)*3.5)}
+</style>
+<script type="importmap">{ "imports": { "three": "/three/build/three.module.js", "three/addons/": "/three/examples/jsm/" } }</script>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div id="ov">
+  <div class="shade-top"></div><div class="shade-bot"></div>
+  <div class="live"><i></i>CANLI</div>
+  <div class="title">SIRA<br>GECESİ</div>
+  <div class="sub">🪳 Gel, <b>halaya katıl!</b> 💃</div>
+  <div class="bottom">
+    <span class="tag">🌶️ Çiğ köfte yoğur</span>
+    <span class="tag">🪕 Saz çal</span>
+    <span class="tag">🎤 Türkü söyle</span>
+  </div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { buildSalon } from './js/salon.js';
+import { createGame } from './js/oyun.js';
+
+const W = innerWidth, H = innerHeight, aspect = W / H;
+document.documentElement.style.setProperty('--u', Math.min(W, H) / 100 + 'px');
+if (aspect > 1.2) document.body.classList.add('wide');
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('cv'), antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H, false);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#120905');
+scene.fog = new THREE.Fog('#120905', 30, 62);
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.25;
+
+const salon = buildSalon(scene);
+const G = createGame(scene, salon);
+
+// Sahneyi kur: orkestra + çiğ köfteciler (ilk gelenler), kalabalık halay, masalar; kadın/erkek karışık
+const F = ['Ayşe', 'Zeynep', 'Elif', 'Merve', 'Derya', 'Ebru', 'Selin', 'Dilan', 'Hazal', 'Nur', 'Leyla', 'Gül', 'Tuba', 'Sibel'];
+const M = ['Mehmet', 'Ahmet', 'Mustafa', 'Ali', 'Hasan', 'Murat', 'Emre', 'Yusuf', 'Ömer', 'Burak', 'Zafer', 'Kemal', 'Halil', 'Baran'];
+for (let i = 0; i < 52; i++) G.handle({ type: 'member', user: { id: 'k' + i, nick: (i % 2 ? F : M)[i % 14] } });
+for (let i = 9; i < 40; i++) {
+  if (i % 3 !== 0) G.handle({ type: 'chat', user: { id: 'k' + i }, text: 'kadın' });
+  G.handle({ type: 'chat', user: { id: 'k' + i }, text: 'Halaya katıl' });
+}
+// herkes yerine yürüsün (hızlı ileri sar), sonra coşkulu an: eller havada
+G.energy = 96;
+for (let k = 0; k < 900; k++) G.update(0.05, 2 + k * 0.08);
+for (let k = 0; k < 30; k++) G.update(0.05, 12.6 + k * 0.004);
+for (const u of G.users.values()) u.bubble = null;
+
+// kamera: önden, halay ön planda, ortada tepsi, arkada orkestra
+const camera = new THREE.PerspectiveCamera(48, aspect, 0.1, 90);
+if (aspect < 0.8) { camera.fov = 52; camera.position.set(0.6, 4.6, 9.2); }
+else if (aspect < 1.2) { camera.fov = 44; camera.position.set(0.6, 4.4, 9.6); }
+else { camera.fov = 34; camera.position.set(0.6, 4.2, 11.0); }
+const look = new THREE.Vector3(0, 0.9, aspect < 0.8 ? -2.6 : -2.0);
+camera.lookAt(look); camera.updateProjectionMatrix();
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new BokehPass(scene, camera, { focus: camera.position.distanceTo(new THREE.Vector3(0, 1, 3)), aperture: 0.0007, maxblur: 0.005 }));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.5, 0.55, 0.78));
+composer.addPass(new OutputPass());
+salon.bulbs.forEach((b) => { b.material.emissiveIntensity = 7; });
+
+let n = 0;
+(function loop() {
+  composer.render();
+  if (++n === 10) document.fonts.ready.then(() => { window.__ready = true; });
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

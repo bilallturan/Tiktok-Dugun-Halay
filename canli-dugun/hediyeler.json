@@ -1,0 +1,17 @@
+{
+  "_aciklama": [
+    "TikTok LIVE Studio 'İzleyici Dilekleri' listesindeki hediyeler ve sahnedeki eylemleri.",
+    "eylem: halay | davulcu | damat | gelin | parasac (değiştirme)",
+    "etiket: ekranda görünen ad. jeton: hediyenin jeton değeri. ikon: rehberde gösterilen emoji (gerçek hediye resmi öğrenilince o görünür).",
+    "ad / id: hediyenin TikTok'taki adı ve ID'si. Panel > 'Hediye kaydı'ndan veya terminaldeki [Hediye] satırlarından bakıp yaz.",
+    "ad ve id boşsa hediye sadece jeton değerine göre eşleşir. Listede olmayan hediyeler değerine göre takı olur.",
+    "Dosyayı kaydedip sayfayı yenilemen yeterli, sunucuyu kapatmana gerek yok."
+  ],
+  "kurallar": [
+    { "eylem": "halay",   "etiket": "Halaya Katıl", "jeton": 1,   "ikon": "🌹", "ad": ["Rose", "Gül"], "id": ["5655"] },
+    { "eylem": "davulcu", "etiket": "Davulcu Ol",   "jeton": 1,   "ikon": "🥁", "ad": [], "id": [] },
+    { "eylem": "damat",   "etiket": "Damat Ol",     "jeton": 99,  "ikon": "🤵", "ad": [], "id": [] },
+    { "eylem": "gelin",   "etiket": "Gelin Ol",     "jeton": 100, "ikon": "👰", "ad": [], "id": [] },
+    { "eylem": "parasac", "etiket": "Para Saç",     "jeton": 199, "ikon": "💸", "ad": [], "id": [] }
+  ]
+}

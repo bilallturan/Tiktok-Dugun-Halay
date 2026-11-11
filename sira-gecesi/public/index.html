@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sıra Gecesi</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪔</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  #cv,#ov{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+  #ov{pointer-events:none}
+  #cnt{margin-top:6px}
+  /* etkileşim sütunları (sahne pikseli, 1080x1920) */
+  .col{position:absolute;top:470px;width:300px;display:flex;flex-direction:column;gap:9px;pointer-events:none}
+  #colL{left:12px} #colR{right:12px}
+  #giftChips{display:flex;flex-direction:column;gap:9px}
+  .col-h{font-weight:900;font-size:25px;color:#fff;background:rgba(18,10,26,.82);border:2px solid rgba(246,196,83,.55);border-radius:18px;padding:7px 12px;text-align:center}
+  .chip{display:flex;align-items:center;gap:10px;background:rgba(22,12,30,.76);border:2px solid rgba(255,215,130,.3);border-radius:18px;padding:7px 12px;color:#fff;backdrop-filter:blur(6px);transition:background .4s,transform .3s}
+  .chip.hit{background:rgba(246,196,83,.6);transform:scale(1.05)}
+  .ci{font-size:40px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0}
+  .ci img{width:52px;height:52px;object-fit:contain}
+  .ct{display:flex;flex-direction:column;line-height:1.12;min-width:0}
+  .ct b{font-size:23px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ct small{font-size:18px;color:#f6c453;font-weight:800}
+  .col #tempo{position:relative;left:auto;right:auto;top:auto;width:140px;height:140px;align-self:center;margin-top:4px}
+  .col #board{position:relative;left:auto;right:auto;top:auto;width:auto;padding:12px 14px;margin-top:4px}
+  .col #board .card-title{font-size:24px}
+  .col #boardList li{font-size:20px;gap:6px}
+  .col #boardList .dm{font-size:16px}
+  .col #boardList .tag{font-size:12px}
+  .col #takiSum{font-size:17px}
+  #hint{display:none}
+  /* hediye listesi TikTok'un kendi menüsünde (üstte) görünüyor: sağ sütunda sadece Cömertler kalır */
+  #colR .col-h, #giftChips{display:none}
+  /* otomatik rol bannerı (ilk gelenler): altın/yeşil, "sen seçildin" hissi */
+  .bn.auto{background:linear-gradient(135deg,rgba(246,180,40,.97),rgba(42,157,143,.95));box-shadow:0 16px 60px rgba(246,196,83,.55),inset 0 0 0 4px rgba(255,255,255,.35)}
+  .bn.auto .bn-g{font-size:36px;font-weight:900}
+</style>
+<script type="importmap">{ "imports": { "three": "/three/build/three.module.js", "three/addons/": "/three/examples/jsm/" } }</script>
+</head>
+<body>
+<header id="topbar">
+  <div class="brand"><span>🪔</span><span>Sıra<b>Gecesi</b></span></div>
+  <div class="pill" id="statusPill"><i class="dot"></i><span id="statusText">DEMO</span></div>
+  <div class="stats">
+    <span class="stat" title="İzleyici">👁 <b id="stViewers">0</b></span>
+    <span class="stat" title="Beğeni">❤️ <b id="stLikes">0</b></span>
+    <span class="stat" title="Toplam elmas">💎 <b id="stDiamonds">0</b></span>
+    <span class="stat" title="Salondaki kişi">🪳 <b id="stDancers">0</b></span>
+  </div>
+  <div class="actions">
+    <button id="btnSound" class="btn gold">🥁 Davul zurnayı başlat</button>
+    <button id="btnNext" class="btn" title="Sonraki parça" hidden>⏭</button>
+    <button id="btnClean" class="btn" title="Sadece sahneyi göster (H)">🎬 Yayın modu</button>
+    <button id="btnFull" class="btn" title="Tam ekran">⛶</button>
+  </div>
+</header>
+
+<main id="layout">
+  <section id="stageWrap">
+    <div id="stage">
+      <canvas id="cv"></canvas>
+      <canvas id="ov"></canvas>
+      <!-- Üst kısım boş: TikTok "İzleyici Dilekleri" menüsünü oraya koyuyor. Etkileşimler sağ/sol sütunlarda. -->
+      <div id="colL" class="col">
+        <div class="col-h">💬 Yorum yaz</div>
+        <div class="chip" data-chip="yorum"><span class="ci">🪑</span><span class="ct"><b>Yorum yaz</b><small>sofraya otur</small></span></div>
+        <div class="chip" data-chip="halay"><span class="ci">💃</span><span class="ct"><b>"Halaya katıl"</b><small>halaya gir</small></span></div>
+        <div class="chip" data-chip="kadin"><span class="ci">👩</span><span class="ct"><b>"kadın"</b><small>kadın ol</small></span></div>
+        <div class="chip" data-chip="erkek"><span class="ci">👨</span><span class="ct"><b>"erkek"</b><small>erkek ol</small></span></div>
+        <div class="chip" data-chip="oyna"><span class="ci">🤸</span><span class="ct"><b>"oyna"</b><small>zıpla</small></span></div>
+        <div class="chip" data-chip="begen"><span class="ci">❤️</span><span class="ct"><b>Beğen</b><small>halay hızlansın</small></span></div>
+        <div id="tempo" class="card">
+          <svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="42"/><circle id="tempoArc" class="arc" cx="50" cy="50" r="42"/></svg>
+          <div class="tempo-txt"><span>🥁</span><b id="tempoName">Ağır</b></div>
+        </div>
+      </div>
+      <div id="colR" class="col">
+        <div class="col-h">🎁 Hediye at</div>
+        <div id="giftChips"></div>
+        <div id="board" class="card">
+          <div class="card-title">🏆 Cömertler</div>
+          <ol id="boardList"></ol>
+          <div id="takiSum">👑 Başköşe boş</div>
+        </div>
+      </div>
+      <div id="announce"></div>
+      <div id="banner"></div>
+      <div id="hint"><span>Gelen sofraya oturur · "kadın" / "erkek" yaz, karakterin değişsin</span><b>💃 <em>"Halaya katıl"</em> yaz, halaya gir!</b></div>
+    </div>
+  </section>
+
+  <aside id="side">
+    <div class="panel">
+      <div class="panel-h">📡 TikTok bağlantısı</div>
+      <form id="liveForm" class="row2" autocomplete="off">
+        <input id="liveUser" placeholder="@kullaniciadi" maxlength="40">
+        <button id="liveBtn" class="go">Bağlan</button>
+      </form>
+      <p class="sub" id="liveMsg">Bağlı değil. Yayın açacak hesabın kullanıcı adını yaz.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-h">⚡ Sahne enerjisi <b id="energyPct">0%</b></div>
+      <div class="bar"><i id="energyBar"></i></div>
+      <p class="sub" id="trackInfo"></p>
+      <p class="sub" id="cnt"></p>
+    </div>
+    <div class="panel grow">
+      <div class="panel-h">💬 Canlı akış</div>
+      <ul id="feed"></ul>
+    </div>
+    <div class="panel">
+      <div class="panel-h">🧪 Demo <label class="sw"><input type="checkbox" id="autoDemo" checked><span>Otomatik izleyici</span></label></div>
+      <div class="btns">
+        <button data-demo="join">👥 +5 misafir</button>
+        <button data-demo="halay">💃 "Halaya katıl"</button>
+        <button data-demo="chat">💬 Yorum</button>
+        <button data-demo="likes">❤️ +60 beğeni</button>
+        <button data-demo="ikram">🎁 İkram</button>
+        <button data-demo="reset">🧹 Sıfırla</button>
+      </div>
+      <div class="btns" id="ruleBtns" style="margin-top:6px"></div>
+      <form id="chatForm" autocomplete="off">
+        <input id="chatName" placeholder="İsim" value="Bilal" maxlength="16">
+        <input id="chatText" placeholder="Yorum… (Halaya katıl / kadın / erkek / oyna)" maxlength="80">
+        <button>Gönder</button>
+      </form>
+    </div>
+    <div class="panel">
+      <div class="panel-h">🎁 Hediye kaydı <span class="hint">ad · id · jeton → eşleşme</span></div>
+      <ul id="giftLog"><li class="empty">Henüz hediye gelmedi.</li></ul>
+    </div>
+  </aside>
+</main>
+
+<script>window.CD = window.CD || {};</script>
+<script src="js/ses.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "_aciklama": [
+    "Sıra gecesi hediye kuralları (TikTok LIVE Studio 'İzleyici Dilekleri' ile aynı liste). Kaydedip sayfayı yenilemen yeterli.",
+    "eylem (değiştirme): cigkofte | halaybasi | cay | saz | solist | darbuka | isot | cosku",
+    "etiket: ekranda görünen ad. jeton: hediyenin jeton değeri. minJeton: bu değer ve üstü (listede olmayan) her hediye.",
+    "ikon: sağ sütunda görünen emoji (gerçek hediye resmi öğrenilince o görünür).",
+    "ad / id: TikTok'taki hediye adı / ID'si (kontrol panelindeki 'Hediye kaydı'ndan bak). Boşsa sadece jeton değerine göre eşleşir.",
+    "İlk gelenler sazcı, solist, darbukacı ve çiğ köfteci olarak sahneyi kurar; hediye atan onların yerini alır."
+  ],
+  "kurallar": [
+    { "eylem": "cigkofte",  "etiket": "Çiğ Köfteci Ol",      "jeton": 1,  "ikon": "🌹", "ad": ["Rose", "Gül"], "id": ["5655"] },
+    { "eylem": "halaybasi", "etiket": "Halay Başı Ol",       "jeton": 10, "ikon": "🌹", "ad": [], "id": [] },
+    { "eylem": "cay",       "etiket": "Herkese Çay",         "jeton": 50, "ikon": "🍵", "ad": [], "id": [] },
+    { "eylem": "saz",       "etiket": "Sazcı Ol",            "jeton": 99, "ikon": "🎻", "ad": [], "id": [] },
+    { "eylem": "solist",    "etiket": "Solist Ol",           "jeton": 30, "ikon": "💿", "ad": [], "id": [] },
+    { "eylem": "darbuka",   "etiket": "Darbukacı Ol",        "jeton": 1,  "ikon": "🥁", "ad": [], "id": [] },
+    { "eylem": "cosku",     "etiket": "Salonu Ayağa Kaldır", "minJeton": 1000, "ikon": "🔥", "ad": [], "id": [] }
+  ]
+}

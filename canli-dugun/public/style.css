@@ -1,0 +1,131 @@
+:root{
+  --bg:#0d0b16; --panel:#161325; --panel2:#1f1a33; --line:#2a2540;
+  --text:#ece8f6; --mute:#9a93b5; --gold:#f6c453; --rose:#ff5c8a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Nunito,"Segoe UI",system-ui,sans-serif;overflow:hidden}
+button,input{font:inherit}
+
+/* üst bar */
+#topbar{height:56px;display:flex;align-items:center;gap:16px;padding:0 16px;border-bottom:1px solid var(--line);background:#100e1c}
+.brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800}
+.brand b{color:var(--gold)}
+.pill{display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;background:var(--panel2);font-size:12px;font-weight:800;letter-spacing:.06em}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+.pill.live{background:#3a1020;color:#ffd0da}
+.pill.live .dot{background:#ff3b5c;box-shadow:0 0 8px #ff3b5c;animation:blink 1.2s infinite}
+.pill.wait .dot{background:#ffa53b;box-shadow:0 0 8px #ffa53b}
+.pill.err .dot{background:#888;box-shadow:none}
+@keyframes blink{50%{opacity:.35}}
+#liveForm button{border:none;border-radius:9px;padding:7px 14px;font-size:13px;font-weight:900;cursor:pointer;background:linear-gradient(180deg,#ff6b8f,#e8336a);color:#fff;flex:0 0 auto}
+#liveForm button.stop{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+#liveMsg.live{color:#9ee3c0}
+#liveMsg.err{color:#ffb38a}
+.bn-ic img{width:76px;height:76px;object-fit:contain;display:block}
+.stats{display:flex;gap:16px;margin-left:auto;font-size:14px;color:var(--mute)}
+.stats b{color:var(--text);font-variant-numeric:tabular-nums}
+.actions{display:flex;gap:8px}
+.btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:7px 12px;border-radius:10px;cursor:pointer;font-weight:800;font-size:13px}
+.btn:hover{border-color:#4a4370}
+.btn.gold{background:linear-gradient(180deg,#ffd77a,#e9a92f);color:#3a2300;border-color:transparent}
+
+/* yerleşim */
+#layout{display:flex;height:calc(100% - 56px)}
+#stageWrap{flex:1;position:relative;overflow:hidden;background:#000}
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0}
+#cv{position:absolute;left:0;top:0;width:1080px;height:1920px;display:block}
+
+/* sahne üstü kartlar (1080x1920 sahne pikseli; telefonda okunacak kadar büyük) */
+.card{position:absolute;background:rgba(22,12,30,.78);backdrop-filter:blur(8px);border:2px solid rgba(255,215,130,.3);border-radius:26px;color:#fff}
+#board{left:20px;top:180px;width:340px;padding:16px 20px}
+#takiSum{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,215,130,.25);font-size:20px;font-weight:800;color:var(--gold)}
+.card-title{font-weight:900;font-size:28px;color:var(--gold);margin-bottom:6px}
+#boardList{list-style:none;margin:0;padding:0}
+#boardList li{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:24px;font-weight:800}
+#boardList .rk{width:34px;text-align:center}
+#boardList .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#boardList .tag{font-size:15px;padding:3px 8px;border-radius:8px;background:var(--gold);color:#3a2300;font-weight:900}
+#boardList .tag.rose{background:var(--rose);color:#fff}
+#boardList .dm{color:#a9dcff;font-size:20px;font-variant-numeric:tabular-nums}
+#boardList .empty{color:#d9cfee;font-weight:800;font-size:22px}
+#tempo{right:24px;top:180px;width:150px;height:150px;border-radius:50%}
+#tempo svg{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);transform:rotate(-90deg)}
+#tempo .trk{fill:none;stroke:rgba(255,255,255,.12);stroke-width:8}
+#tempo .arc{fill:none;stroke:#7ad1ff;stroke-width:8;stroke-linecap:round;stroke-dasharray:263.9;stroke-dashoffset:263.9;transition:stroke-dashoffset .3s,stroke .4s}
+.tempo-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:32px;line-height:1.1}
+.tempo-txt b{font-size:26px}
+
+/* hediye rehberi: sahnenin en üstünde yatay şerit */
+#legend{left:20px;right:20px;top:16px;padding:10px 12px;border-radius:26px}
+#legendList{list-style:none;margin:0;padding:0;display:flex;gap:8px}
+#legendList li{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px 8px;border-radius:18px;background:rgba(255,255,255,.07);font-weight:900;transition:background .4s}
+#legendList li.hit{background:rgba(246,196,83,.5);animation:lgHit .6s}
+.lg-ic{height:64px;display:flex;align-items:center;justify-content:center;font-size:52px;line-height:1}
+.lg-ic img{width:64px;height:64px;object-fit:contain}
+.lg-n{font-size:22px;white-space:nowrap;line-height:1.15;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.lg-t{font-size:20px;color:var(--gold);line-height:1.1}
+@keyframes lgHit{40%{transform:scale(1.06)}}
+body.no-legend #legend{display:none}
+
+#announce{position:absolute;left:50%;top:728px;transform:translateX(-50%);pointer-events:none;width:1020px;display:flex;justify-content:center}
+#announce .an{padding:16px 34px;border-radius:999px;background:linear-gradient(180deg,#ffe7a6,#f0b232);color:#3a2300;font-weight:900;font-size:38px;text-align:center;
+  box-shadow:0 10px 36px rgba(246,196,83,.5),inset 0 0 0 4px rgba(255,255,255,.4);animation:annIn .4s cubic-bezier(.2,1.4,.4,1)}
+#announce.off .an{opacity:0;transform:translateY(-14px);transition:all .3s}
+@keyframes annIn{from{opacity:0;transform:translateY(-20px) scale(.9)}to{opacity:1;transform:none}}
+
+#banner{position:absolute;left:50%;top:800px;transform:translateX(-50%);pointer-events:none;width:1020px;display:flex;justify-content:center}
+.bn{display:flex;gap:26px;align-items:center;padding:24px 44px 24px 30px;border-radius:36px;color:#fff;max-width:1000px;
+  background:linear-gradient(135deg,rgba(255,79,123,.96),rgba(246,150,60,.96));box-shadow:0 16px 60px rgba(255,92,138,.55),inset 0 0 0 4px rgba(255,255,255,.3);
+  animation:bnIn .55s cubic-bezier(.2,1.5,.4,1)}
+.bn-ic{font-size:110px;line-height:1;filter:drop-shadow(0 6px 12px rgba(0,0,0,.3))}
+.bn-ic img{width:120px;height:120px;object-fit:contain;display:block}
+.bn-n{font-size:54px;font-weight:900;line-height:1.05}
+.bn-g{font-size:30px;font-weight:800}
+.bn-t{margin-top:10px;font-size:24px;font-weight:900;background:rgba(0,0,0,.2);padding:6px 18px;border-radius:99px;display:inline-block}
+#banner.off .bn{opacity:0;transform:scale(.9);transition:all .35s}
+@keyframes bnIn{from{opacity:0;transform:scale(.55) rotate(-4deg)}to{opacity:1;transform:none}}
+
+/* alt kısım TikTok yorumlarının altında kalır: ipucu halkanın hemen altında */
+#hint{position:absolute;left:50%;top:1530px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:1040px}
+#hint span{font-size:22px;font-weight:800;color:#efe6fb;background:rgba(15,8,20,.62);padding:5px 18px;border-radius:99px}
+#hint b{font-size:36px;color:#fff;background:rgba(15,8,20,.82);padding:10px 30px;border-radius:99px;border:2px solid rgba(246,196,83,.6)}
+#hint em{color:var(--gold);font-style:normal}
+
+/* yan panel */
+#side{width:340px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;padding:12px;border-left:1px solid var(--line);background:#100e1c;overflow:hidden}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px}
+.panel.grow{flex:1;min-height:120px;display:flex;flex-direction:column}
+.panel-h{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;color:#cfc8e6;margin-bottom:8px}
+.panel-h b{margin-left:auto;color:var(--text)}
+.bar{height:10px;border-radius:99px;background:#241f38;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7ad1ff,#9ee37d,#ffc145,#ff4f7b);background-size:316px 100%;border-radius:99px;transition:width .25s}
+.sub{margin:8px 0 0;font-size:12px;color:var(--mute)}
+#feed{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:0}
+.fi{display:flex;gap:8px;align-items:flex-start;padding:5px 6px;border-radius:10px;font-size:13px;animation:fiIn .25s}
+.fi.gift{background:rgba(246,196,83,.13)}
+.fi.join .tx{color:#9ee3c0}
+.fi.like .tx{color:#ffb3c6}
+@keyframes fiIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.av{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:11px;font-weight:900;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.tx{line-height:1.4;word-break:break-word}
+.btns{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.btns button,#chatForm button{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:9px;padding:7px 6px;font-size:12px;font-weight:800;cursor:pointer}
+.btns button:hover,#chatForm button:hover{border-color:var(--gold)}
+#chatForm{display:flex;gap:6px;margin-top:8px}
+input{background:#0f0c1b;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:7px 9px;font-size:13px;min-width:0}
+#chatName{width:72px}
+#chatText{flex:1}
+.row2{display:flex;gap:6px}
+.row2 input{flex:1}
+.panel-h .hint{margin-left:auto;font-weight:600;font-size:11px;color:var(--mute)}
+#giftLog{list-style:none;margin:0;padding:0;max-height:150px;overflow-y:auto;font-size:12px}
+#giftLog li{padding:4px 0;border-bottom:1px solid var(--line);line-height:1.35}
+#giftLog li:last-child{border-bottom:none}
+#giftLog li i{color:#ffb38a;font-style:normal}
+#giftLog li small{display:block;color:var(--mute)}
+#giftLog .empty{color:var(--mute)}
+.sw{margin-left:auto;display:flex;align-items:center;gap:5px;font-weight:700;font-size:12px;cursor:pointer}
+
+/* yayın modu: sadece sahne */
+body.clean #topbar,body.clean #side{display:none}
+body.clean #layout{height:100%}
